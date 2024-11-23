@@ -1,0 +1,1 @@
+# ISU Judging System maosasa オリジナルバージョン
