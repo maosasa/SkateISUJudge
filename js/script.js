@@ -53,7 +53,7 @@ const masterData = {
     "CCoSpV":{"type": "spin", "lb": 1.28, "l1": 1.5, "l2": 1.88, "l3": 2.25, "l4": 2.63 },
     "StSq":{"type": "step", "lb": 1.5, "l1": 1.8, "l2": 2.6, "l3": 3.3, "l4": 3.9 },
     "ChSq":{"type": "choreo", "lb": "-", "l1": 3, "l2": "-", "l3": "-", "l4": "-" }
-    };
+};
   
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     loadMasterData()
     */
-    console.log(masterData)
+    console.log(masterData);
 
     //alert
     if (elements.length === 0) {
@@ -100,17 +100,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // 表を生成
     //ヘッダー行
     header_cells = document.createElement("tr");
-    header_cells.appendChild(document.createElement("th"))
+    header_cells.appendChild(document.createElement("th"));
     for(i=0;i<columnsCount;i++){
-        header_cell = document.createElement("th")
-        header_cell.textContent = "J" + (i+1)
-        header_cells.appendChild(header_cell)
+        header_cell = document.createElement("th");
+        header_cell.textContent = "J" + (i+1);
+        header_cells.appendChild(header_cell);
     }
-    header_cells.appendChild(document.createElement("th"))
-    header_goe = document.createElement("th")
-    header_goe.textContent = "GOE"
-    header_cells.appendChild(header_goe)
-    table.appendChild(header_cells)
+    header_cells.appendChild(document.createElement("th"));
+    header_goe = document.createElement("th");
+    header_goe.textContent = "GOE";
+    header_cells.appendChild(header_goe);
+    table.appendChild(header_cells);
 
     // input
     const rows = [];
@@ -125,13 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
         for(i=0;i<3;i++){
             const eachElementCell = document.createElement("input");
             eachElementCell.value = threeElements[i]["name"];
-            rowInElement.appendChild(eachElementCell)
+            rowInElement.appendChild(eachElementCell);
         }
-        elementsCell.appendChild(rowInElement)
+        elementsCell.appendChild(rowInElement);
         // const input_element = document.createElement("input");
         // input_element.type = "text";
         // input_element.value = element;
-        // elementsCell.appendChild(input_element)
+        // elementsCell.appendChild(input_element);
         row.appendChild(elementsCell);
 
         // 指定された列数分の入力フィールドを作成
@@ -228,24 +228,26 @@ document.addEventListener("DOMContentLoaded", () => {
     function getGoe() {
         // GOEを更新
         // 各列の合計を更新
-        getBaseValueForGoe()
+        getBaseValueForGoe();
         rows.forEach(({ cells, goeCell, judgeAvgCell, goeBaseCell }) => {
             const values = cells.map(cell => parseFloat(cell.value) || 0);
-            let judgeAvg = 0
+            let judgeAvg = 0;
             // 最大値と最小値を除いた平均を計算
             if (values.length > 4) {
                 const sorted = values.slice().sort((a, b) => a - b);
                 const filteredValues = sorted.slice(1, -1); // 最大値と最小値を除外
-                judgeAvg =
-                    filteredValues.reduce((sum, value) => sum + value, 0) / filteredValues.length;
+                judgeAvg = filteredValues.reduce(
+                    (sum, value) => sum + value, 0) / filteredValues.length;
                 judgeAvgCell.textContent = judgeAvg.toFixed(2); // 小数点以下2桁に固定
             } else {
-                judgeAvgCell.textContent = (values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(2); // 要素が2個以下の場合は表示しない
+                judgeAvgCell.textContent = (
+                    values.reduce((sum, value) => sum + value, 0) / values.length
+                    ).toFixed(2);
             }
-            let baseValueForGoe = parseFloat(goeBaseCell.textContent)
-            let goe = 0
-            goe = baseValueForGoe * judgeAvg / 10.0
-            goeCell.textContent = goe.toFixed(2)
+            let baseValueForGoe = parseFloat(goeBaseCell.textContent);
+            let goe = 0;
+            goe = baseValueForGoe * judgeAvg / 10.0;
+            goeCell.textContent = goe.toFixed(2);
         })
     }
 
@@ -265,9 +267,10 @@ document.addEventListener("DOMContentLoaded", () => {
                         break;
                     case "choreo":
                         goeBaseCell.textContent = "5";
+                        break;
                     };
             }else{
-                goeBaseCell.textContent = "0"
+                goeBaseCell.textContent = "0";
             }
         });
     }
@@ -277,8 +280,8 @@ document.addEventListener("DOMContentLoaded", () => {
             {"name": "", type: "", "rot": null, "edge": null, "v": false, "level": null},
             {"name": "", type: "", "rot": null, "edge": null, "v": false, "level": null},
             {"name": "", type: "", "rot": null, "edge": null, "v": false, "level": null}
-        ]
-        let elements = text.split("+")
+        ];
+        let elements = text.split("+");
         elements.forEach((element, index)=> {
             if (element.match(/^[0-9]{1}[A-Za-z]{1,2}/)){
                 //jump
@@ -299,11 +302,11 @@ document.addEventListener("DOMContentLoaded", () => {
             }else if(element.match(/ChSq/)){
                 e[index]["name"] = "ChSq";
                 e[index]["type"] = "choreo";
-                e[index]["level"] = "1"; 
+                e[index]["level"] = "1";
             }
             console.log(e[index]);
-        })
-        return e
+        });
+        return e;
     }
 
     // // 計算ボタンの処理（サンプル: 入力された数字の合計をアラートで表示）
