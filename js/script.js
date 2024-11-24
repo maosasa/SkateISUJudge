@@ -121,12 +121,11 @@ document.addEventListener("DOMContentLoaded", () => {
         const elementsCell = document.createElement("td");
         elementsCell.textContent = element;
         const rowInElement = document.createElement("tr");
-        getEachElementFromText(element)
+        const threeElements = getEachElementFromText(element);
         for(i=0;i<3;i++){
             const eachElementCell = document.createElement("input");
-            eachElementCell.value = "a";
+            eachElementCell.value = threeElements[i]["name"];
             rowInElement.appendChild(eachElementCell)
-
         }
         elementsCell.appendChild(rowInElement)
         // const input_element = document.createElement("input");
@@ -182,6 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         table.appendChild(row);
         rows.push({ element, cells, rowSumCell, goeCell, judgeAvgCell, goeBaseCell, baseValueCell });
+        // getGoe();
     });
 
     // 列ごとの合計行を追加
@@ -201,6 +201,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 合計行は最後に追加
     table.appendChild(sumRow);
+
+    // 値を更新
+    getGoe();
 
     function updateSums() {
         // 各行の合計を更新
@@ -230,18 +233,18 @@ document.addEventListener("DOMContentLoaded", () => {
             const values = cells.map(cell => parseFloat(cell.value) || 0);
             let judgeAvg = 0
             // 最大値と最小値を除いた平均を計算
-            if (values.length > 2) {
+            if (values.length > 4) {
                 const sorted = values.slice().sort((a, b) => a - b);
                 const filteredValues = sorted.slice(1, -1); // 最大値と最小値を除外
                 judgeAvg =
                     filteredValues.reduce((sum, value) => sum + value, 0) / filteredValues.length;
                 judgeAvgCell.textContent = judgeAvg.toFixed(2); // 小数点以下2桁に固定
             } else {
-                judgeAvgCell.textContent = "N/A"; // 要素が2個以下の場合は表示しない
+                judgeAvgCell.textContent = (values.reduce((sum, value) => sum + value, 0) / values.length).toFixed(2); // 要素が2個以下の場合は表示しない
             }
             let baseValueForGoe = parseFloat(goeBaseCell.textContent)
             let goe = 0
-            goe = baseValueForGoe * judgeAvg / 10
+            goe = baseValueForGoe * judgeAvg / 10.0
             goeCell.textContent = goe.toFixed(2)
         })
     }
@@ -270,9 +273,37 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function getEachElementFromText(text){
-        let elements = console.log(text.split("+"))
-        /////////////ここから
-        return
+        let e = [
+            {"name": "", type: "", "rot": null, "edge": null, "v": false, "level": null},
+            {"name": "", type: "", "rot": null, "edge": null, "v": false, "level": null},
+            {"name": "", type: "", "rot": null, "edge": null, "v": false, "level": null}
+        ]
+        let elements = text.split("+")
+        elements.forEach((element, index)=> {
+            if (element.match(/^[0-9]{1}[A-Za-z]{1,2}/)){
+                //jump
+                e[index]["type"] = "jump";
+                e[index]["name"] = element.match(/^[0-9]{1}(T|S|Lo|F|Lz|A)/)[0];
+                e[index]["rot"] = element.match(/(<|q)/) ? element.match(/(<|q)/)[0] : null;
+                e[index]["edge"] = element.match(/(e|!)/) ? element.match(/(e|!)/)[0] : null;
+            }else if(element.match(/Sp/)){
+                //spin
+                e[index]["name"] = element.match(/[A-Za-z]*Sp/)[0];
+                e[index]["type"] = "spin";
+                e[index]["v"] = element.match(/V/) ? true : false;
+                e[index]["level"] = element.match(/Sp.*/)[0].replace("Sp","");
+            }else if(element.match(/StSq/)){
+                e[index]["name"] = "StSq";
+                e[index]["type"] = "step";
+                e[index]["level"] = element.match(/StSq.*/)[0].replace("StSq","");
+            }else if(element.match(/ChSq/)){
+                e[index]["name"] = "ChSq";
+                e[index]["type"] = "choreo";
+                e[index]["level"] = "1"; 
+            }
+            console.log(e[index]);
+        })
+        return e
     }
 
     // // 計算ボタンの処理（サンプル: 入力された数字の合計をアラートで表示）
