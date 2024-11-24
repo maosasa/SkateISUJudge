@@ -149,11 +149,11 @@ document.addEventListener("DOMContentLoaded", () => {
             row.appendChild(inputCell);
         }
 
-        // 行ごとの合計セルを追加
-        const rowSumCell = document.createElement("td");
-        rowSumCell.classList.add("row-sum");
-        rowSumCell.textContent = "0";
-        row.appendChild(rowSumCell);
+        // // 行ごとの合計セルを追加
+        // const rowSumCell = document.createElement("td");
+        // rowSumCell.classList.add("row-sum");
+        // rowSumCell.textContent = "0";
+        // row.appendChild(rowSumCell);
 
         //GOE列を追加
         const goeCell = document.createElement("td");
@@ -180,46 +180,46 @@ document.addEventListener("DOMContentLoaded", () => {
         row.appendChild(baseValueCell);
 
         table.appendChild(row);
-        rows.push({ element, cells, rowSumCell, goeCell, judgeAvgCell, goeBaseCell, baseValueCell });
+        rows.push({ element, cells, goeCell, judgeAvgCell, goeBaseCell, baseValueCell });
         // getGoe();
     });
 
-    // 列ごとの合計行を追加
-    const sumRow = document.createElement("tr");
-    const emptyCell = document.createElement("td"); // ラベル用空セル
-    emptyCell.textContent = "列合計";
-    sumRow.appendChild(emptyCell);
+    // // 列ごとの合計行を追加
+    // const sumRow = document.createElement("tr");
+    // const emptyCell = document.createElement("td"); // ラベル用空セル
+    // emptyCell.textContent = "列合計";
+    // sumRow.appendChild(emptyCell);
 
-    const columnSums = [];
-    for (let i = 0; i < columnsCount; i++) {
-        const columnSumCell = document.createElement("td");
-        columnSumCell.classList.add("column-sum");
-        columnSumCell.textContent = "0";
-        sumRow.appendChild(columnSumCell);
-        columnSums.push(columnSumCell);
-    }
+    // const columnSums = [];
+    // for (let i = 0; i < columnsCount; i++) {
+    //     const columnSumCell = document.createElement("td");
+    //     columnSumCell.classList.add("column-sum");
+    //     columnSumCell.textContent = "0";
+    //     sumRow.appendChild(columnSumCell);
+    //     columnSums.push(columnSumCell);
+    // }
 
-    // 合計行は最後に追加
-    table.appendChild(sumRow);
+    // // 合計行は最後に追加
+    // table.appendChild(sumRow);
 
     // 値を更新
     getGoe();
 
     function updateSums() {
-        // 各行の合計を更新
-        rows.forEach(({ cells, rowSumCell }) => {
-            const rowSum = cells.reduce((sum, cell) => sum + (parseFloat(cell.value) || 0), 0);
-            rowSumCell.textContent = rowSum;
-        });
+        // // 各行の合計を更新
+        // rows.forEach(({ cells, rowSumCell }) => {
+        //     const rowSum = cells.reduce((sum, cell) => sum + (parseFloat(cell.value) || 0), 0);
+        //     rowSumCell.textContent = rowSum;
+        // });
 
-        // 各列の合計を更新
-        for (let colIndex = 0; colIndex < columnsCount; colIndex++) {
-            let columnSum = 0;
-            rows.forEach(({ cells }) => {
-                columnSum += parseFloat(cells[colIndex].value) || 0;
-            });
-            columnSums[colIndex].textContent = columnSum;
-        }
+        // // 各列の合計を更新
+        // for (let colIndex = 0; colIndex < columnsCount; colIndex++) {
+        //     let columnSum = 0;
+        //     rows.forEach(({ cells }) => {
+        //         columnSum += parseFloat(cells[colIndex].value) || 0;
+        //     });
+        //     columnSums[colIndex].textContent = columnSum;
+        // }
 
         //goeを更新
         getGoe();
