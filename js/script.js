@@ -85,20 +85,26 @@ document.addEventListener("DOMContentLoaded", () => {
     */
     console.log(masterData);
 
-    //alert
-    if (elements.length === 0) {
-        alert("要素リストが空です。");
-        return;
-    }    
-    if (columnsCount < 1 || columnsCount > 20) {
-        alert("列数は1から20の間で指定してください。");
-        return;
+    // 要素リストに例を入れる
+    if(document.getElementById("element-list")){
+        elementListTextarea = document.getElementById("element-list");
+        elementListTextarea.textContent = "1S\n1Lo\n1F+1T\nStSq\n1Lz\nSSp"
     }
+
+    // //alert
+    // if (elements.length === 0) {
+    //     alert("要素リストが空です。");
+    //     return;
+    // }    
+    // if (columnsCount < 1 || columnsCount > 20) {
+    //     alert("列数は1から20の間で指定してください。");
+    //     return;
+    // }
 
     const table = document.getElementById("spreadsheet");
 
     // 表を生成
-    //ヘッダー行
+    // ヘッダー行
     header_cells = document.createElement("tr");
     header_cells.appendChild(document.createElement("th"));
     for(i=0;i<columnsCount;i++){
@@ -106,9 +112,17 @@ document.addEventListener("DOMContentLoaded", () => {
         header_cell.textContent = "J" + (i+1);
         header_cells.appendChild(header_cell);
     }
-    header_cells.appendChild(document.createElement("th"));
-    header_goe = document.createElement("th");
+    let header_goe = document.createElement("th");
     header_goe.textContent = "GOE";
+    header_cells.appendChild(header_goe);
+    header_goe = document.createElement("th");
+    header_goe.textContent = "AVG";
+    header_cells.appendChild(header_goe);
+    header_goe = document.createElement("th");
+    header_goe.textContent = "GOE-base";
+    header_cells.appendChild(header_goe);
+    header_goe = document.createElement("th");
+    header_goe.textContent = "BV";
     header_cells.appendChild(header_goe);
     table.appendChild(header_cells);
 
@@ -123,8 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const rowInElement = document.createElement("tr");
         const threeElements = getEachElementFromText(element);
         for(i=0;i<3;i++){
-            const eachElementCell = document.createElement("input");
-            eachElementCell.value = threeElements[i]["name"];
+            const eachElementCell = document.createElement("td");
+            eachElementCell.textContent = threeElements[i]["name"];
             rowInElement.appendChild(eachElementCell);
         }
         elementsCell.appendChild(rowInElement);
@@ -181,7 +195,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         table.appendChild(row);
         rows.push({ element, cells, goeCell, judgeAvgCell, goeBaseCell, baseValueCell });
-        // getGoe();
     });
 
     // // 列ごとの合計行を追加
